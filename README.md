@@ -1,15 +1,20 @@
-# SalesAPI — MVP CRUD em .NET 10 com BDD
+# SalesAPI — API de Gestão Comercial em .NET 10
 
-API simples de Vendas/Produtos/Estoque/Clientes feita com **.NET 10 (LTS)**, **EF Core 10** + **PostgreSQL** e testes em duas camadas: unitários (xUnit) e de integração com **BDD via Reqnroll** (sucessor do SpecFlow), em Gherkin pt-BR.
+API de vendas/estoque/financeiro construída com **.NET 10**, **Clean Architecture**, **EF Core 10 + PostgreSQL** e testes em duas camadas: unitários (xUnit) e BDD com **Reqnroll** (Gherkin pt-BR).
 
 ## Stack
 
 | Item | Versão |
 |---|---|
 | .NET / C# | 10.0 / 14 |
-| EF Core | 10.0.1 |
+| EF Core | 10.0.7 |
 | Npgsql.EntityFrameworkCore.PostgreSQL | 10.0.1 |
 | PostgreSQL | 17 |
+| Hangfire (jobs agendados) | 1.8.23 |
+| MailKit (e-mail) | 4.16.0 |
+| ClosedXML (exportação Excel) | 0.105.0 |
+| QuestPDF (geração de PDF) | 2026.2.4 |
+| Serilog | 10.0.0 |
 | xUnit | 2.9.2 |
 | Reqnroll | 3.3.4 |
 | FluentAssertions | 7.0.0 |
@@ -18,21 +23,20 @@ API simples de Vendas/Produtos/Estoque/Clientes feita com **.NET 10 (LTS)**, **E
 
 ```
 SalesAPI/
-├── docker-compose.yml          # PostgreSQL 17
-├── global.json                 # SDK pinado em 10.0
+├── docker-compose.yml
+├── global.json                         # SDK pinado em 10.0
 ├── SalesAPI.sln
-├── src/SalesAPI/               # API ASP.NET Core
-│   ├── Controllers/            # Clientes, Produtos, Estoque, Vendas
-│   ├── Models/                 # Entidades EF
-│   ├── DTOs/                   # Records de request/response
-│   ├── Data/AppDbContext.cs
-│   └── Services/VendaService.cs
+├── src/
+│   ├── SalesAPI/                       # Host — ASP.NET Core (Controllers, Program.cs)
+│   ├── SalesAPI.Application/           # Casos de uso, DTOs, serviços, interfaces
+│   ├── SalesAPI.Domain/                # Entidades e regras de domínio
+│   └── SalesAPI.Infrastructure/        # EF Core, repositórios, migrations
 └── tests/
-    ├── SalesAPI.UnitTests/             # xUnit + EF InMemory (foco em regras de venda)
-    └── SalesAPI.IntegrationTests/      # Reqnroll + WebApplicationFactory
-        ├── Features/  *.feature        # Cenários em pt-BR
-        ├── Steps/     *.cs             # Step definitions
-        └── Support/   TestWebApplicationFactory.cs
+    ├── SalesAPI.UnitTests/             # xUnit + EF InMemory
+    ├── SalesAPI.BDD.Shared/            # WebApplicationFactory compartilhada
+    ├── SalesAPI.BDD.Clientes/          # Cenários BDD — Clientes
+    ├── SalesAPI.BDD.Produtos/          # Cenários BDD — Produtos
+    └── SalesAPI.BDD.Vendas/            # Cenários BDD — Vendas
 ```
 
 ## Rodando
@@ -41,45 +45,58 @@ SalesAPI/
 # 1) Sobe o Postgres
 docker compose up -d
 
-# 2) Aplica migrations (gera o schema)
-cd src/SalesAPI
-dotnet ef migrations add Inicial
-dotnet ef database update
+# 2) Aplica migrations
+dotnet ef database update \
+  --project src/SalesAPI.Infrastructure \
+  --startup-project src/SalesAPI
 
 # 3) Roda a API
-dotnet run
+dotnet run --project src/SalesAPI
 # Swagger em http://localhost:5000/swagger
 ```
 
 ## Testes
 
 ```bash
-# Tudo
+# Todos
 dotnet test
 
 # Só unitários
 dotnet test tests/SalesAPI.UnitTests
 
-# Só BDD (integração)
-dotnet test tests/SalesAPI.IntegrationTests
+# BDD por domínio
+dotnet test tests/SalesAPI.BDD.Clientes
+dotnet test tests/SalesAPI.BDD.Produtos
+dotnet test tests/SalesAPI.BDD.Vendas
 ```
 
-Os testes de integração usam **EF InMemory** dentro do `WebApplicationFactory`, então **não precisam do Postgres rodando** — só a API em si precisa.
+Os testes BDD usam **EF InMemory** dentro do `WebApplicationFactory` — não precisam do Postgres rodando.
 
 ## Endpoints
 
-| Verbo | Rota | Descrição |
-|---|---|---|
-| GET/POST/PUT/DELETE | `/api/clientes` | CRUD de clientes |
-| GET/POST/PUT/DELETE | `/api/produtos` | CRUD de produtos |
-| GET/PUT | `/api/estoque/{produtoId}` | Consultar e ajustar estoque |
-| GET/POST | `/api/vendas` | Listar e registrar vendas (baixa estoque automaticamente) |
+| Área | Rota base |
+|---|---|
+| Autenticação (JWT) | `/api/auth` |
+| Usuários | `/api/usuarios` |
+| Clientes | `/api/clientes` |
+| Produtos | `/api/produtos` |
+| Categorias | `/api/categorias` |
+| Marcas | `/api/marcas` |
+| Fornecedores | `/api/fornecedores` |
+| Estoque | `/api/estoque` |
+| Vendas | `/api/vendas` |
+| Vendas PDV | `/api/vendas-pdv` |
+| Compras | `/api/compras` |
+| Caixa | `/api/caixa` |
+| Financeiro | `/api/financeiro` |
+| Fiscal (NF-e) | `/api/fiscal` |
+| Relatórios | `/api/relatorios` |
+| Automação (jobs) | `/api/automacao` |
 
 ## Regras de negócio cobertas pelos testes
 
 - Venda válida reduz estoque e calcula total
-- Venda não pode ser feita com estoque insuficiente (e o estoque permanece intacto)
-- Venda não pode ser feita para cliente inexistente
-- Venda não pode ser feita com produto inexistente
-- Itens duplicados no mesmo request são agrupados
+- Venda bloqueada com estoque insuficiente (estoque permanece intacto)
+- Venda bloqueada para cliente ou produto inexistente
+- Itens duplicados no mesmo pedido são agrupados
 - Produto novo começa com estoque 0

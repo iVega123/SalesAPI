@@ -1,0 +1,34 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(Get-ChildItem -Path \"f:\\\\Animaker\\\\SalesAPI\\\\SalesAPI\" -Recurse -Force)",
+      "Bash(Select-Object FullName, PSIsContainer)",
+      "Bash(Sort-Object FullName)",
+      "Bash(Format-List)",
+      "PowerShell(Get-ChildItem -Path \"f:\\\\Animaker\\\\SalesAPI\\\\SalesAPI\\\\src\\\\SalesAPI\" -Depth 1 | Where-Object { !$_.PSPath.Contains\\('\\\\bin\\\\'\\) -and !$_.PSPath.Contains\\('\\\\obj\\\\'\\) } | Select-Object Name, PSIsContainer)",
+      "PowerShell(Get-ChildItem -Path \"f:\\\\Animaker\\\\SalesAPI\\\\SalesAPI\\\\src\\\\SalesAPI\" | Select-Object Name, @{Name=\"Type\"; Expression={if\\($_.PSIsContainer\\) {\"Folder\"} else {\"File\"}}} | Format-Table -AutoSize)",
+      "Bash(Get-ChildItem -Path \"f:\\\\Animaker\\\\SalesAPI\\\\SalesAPI\" -Recurse -Directory)",
+      "Bash(Select-Object -ExpandProperty FullName)",
+      "Bash(Sort-Object)",
+      "PowerShell(Get-ChildItem -Path \"f:\\\\Animaker\\\\SalesAPI\\\\SalesAPI\\\\src\\\\SalesAPI\" -File -Recurse | Where-Object { $_.Extension -in @\\('.cs', '.csproj', '.json'\\) } | Select-Object -ExpandProperty FullName | Sort-Object)",
+      "Bash(grep -E \"README|\\\\.md$\")",
+      "Bash(dotnet build *)",
+      "Bash(Get-ChildItem -Recurse -Directory)",
+      "Bash(Format-Table FullName, PSIsContainer, Length -AutoSize)",
+      "PowerShell(Get-ChildItem -Path \"f:\\\\Animaker\\\\SalesAPI\\\\SalesAPI\" -Recurse -Force | Select-Object FullName, PSIsContainer, @{Name=\"Length\";Expression={if\\($_.PSIsContainer\\){\"[DIR]\"}else{$_.Length}}} | Sort-Object FullName | Format-Table FullName, PSIsContainer, Length -AutoSize -Wrap)",
+      "Bash(dotnet add *)",
+      "Bash(Get-ChildItem -Recurse -Force -ErrorAction SilentlyContinue)",
+      "Bash(grep -E \"\\\\.\\(cs|feature|json\\)$\")",
+      "Bash(grep -E \"\\\\.\\(json|yml|yaml|md\\)$\")",
+      "Bash(dotnet restore *)",
+      "Bash(dotnet test *)",
+      "Bash(Remove-Item -Recurse -Force \"f:\\\\Animaker\\\\SalesAPI\\\\SalesAPI\\\\src\\\\SalesAPI\\\\Data\")",
+      "Bash(Remove-Item -Recurse -Force \"f:\\\\Animaker\\\\SalesAPI\\\\SalesAPI\\\\src\\\\SalesAPI\\\\Services\")",
+      "Bash(Remove-Item -Recurse -Force \"f:\\\\Animaker\\\\SalesAPI\\\\SalesAPI\\\\src\\\\SalesAPI\\\\Models\")",
+      "Bash(Remove-Item -Recurse -Force \"f:\\\\Animaker\\\\SalesAPI\\\\SalesAPI\\\\tests\\\\SalesAPI.IntegrationTests\")",
+      "Bash(Remove-Item \"f:\\\\Animaker\\\\SalesAPI\\\\SalesAPI\\\\src\\\\SalesAPI.Application\\\\DTOs\\\\Dtos.cs\")",
+      "Bash(dotnet list *)",
+      "Bash(Select-String -Pattern \"MailKit\")"
+    ]
+  }
+}

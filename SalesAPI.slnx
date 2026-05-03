@@ -1,0 +1,15 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src\SalesAPI\SalesAPI.csproj" Type="C#" />
+    <Project Path="src\SalesAPI.Application\SalesAPI.Application.csproj" Type="C#" />
+    <Project Path="src\SalesAPI.Domain\SalesAPI.Domain.csproj" Type="C#" />
+    <Project Path="src\SalesAPI.Infrastructure\SalesAPI.Infrastructure.csproj" Type="C#" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests\SalesAPI.UnitTests\SalesAPI.UnitTests.csproj" Type="C#" />
+    <Project Path="tests\SalesAPI.BDD.Clientes\SalesAPI.BDD.Clientes.csproj" Type="C#" />
+    <Project Path="tests\SalesAPI.BDD.Produtos\SalesAPI.BDD.Produtos.csproj" Type="C#" />
+    <Project Path="tests\SalesAPI.BDD.Vendas\SalesAPI.BDD.Vendas.csproj" Type="C#" />
+    <Project Path="tests\SalesAPI.BDD.Shared\SalesAPI.BDD.Shared.csproj" Type="C#" />
+  </Folder>
+</Solution>

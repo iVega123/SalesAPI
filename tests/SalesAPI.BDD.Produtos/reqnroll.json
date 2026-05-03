@@ -1,0 +1,9 @@
+{
+  "$schema": "https://reqnroll.net/reqnroll-json-schema.json",
+  "language": {
+    "feature": "pt-BR"
+  },
+  "stepAssemblies": [
+    { "assembly": "SalesAPI.BDD.Shared" }
+  ]
+}

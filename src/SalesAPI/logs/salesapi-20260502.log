@@ -1,0 +1,10 @@
+2026-05-02 20:03:38.880 -04:00 [ERR] Failed executing DbCommand (16ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM "__EFMigrationsHistory"
+ORDER BY "MigrationId";
+2026-05-02 20:03:39.271 -04:00 [INF] Now listening on: https://localhost:60095
+2026-05-02 20:03:39.272 -04:00 [INF] Now listening on: http://localhost:60096
+2026-05-02 20:03:39.314 -04:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-05-02 20:03:39.314 -04:00 [INF] Hosting environment: Development
+2026-05-02 20:03:39.315 -04:00 [INF] Content root path: F:\Animaker\SalesAPI\SalesAPI\src\SalesAPI
+2026-05-02 20:03:41.171 -04:00 [INF] HTTP GET / responded 404 in 702.6965 ms

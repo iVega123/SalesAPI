@@ -1,0 +1,21 @@
+2026-05-03 17:51:06.770 -04:00 [INF] Start installing Hangfire SQL objects...
+2026-05-03 17:51:06.968 -04:00 [INF] Hangfire SQL objects installed.
+2026-05-03 17:51:07.614 -04:00 [INF] Now listening on: https://localhost:60095
+2026-05-03 17:51:07.616 -04:00 [INF] Now listening on: http://localhost:60096
+2026-05-03 17:51:07.655 -04:00 [INF] Starting Hangfire Server using job storage: 'PostgreSQL Server: Host: localhost, DB: salesdb, Schema: hangfire'
+2026-05-03 17:51:07.655 -04:00 [INF] Using the following options for PostgreSQL job storage:
+2026-05-03 17:51:07.656 -04:00 [INF]     Queue poll interval: 00:00:15.
+2026-05-03 17:51:07.656 -04:00 [INF]     Invisibility timeout: 00:30:00.
+2026-05-03 17:51:07.657 -04:00 [INF]     Use sliding invisibility timeout: False.
+2026-05-03 17:51:07.657 -04:00 [INF] Using the following options for Hangfire Server:
+    Worker count: 2
+    Listening queues: 'default'
+    Shutdown timeout: 00:00:15
+    Schedule polling interval: 00:00:15
+2026-05-03 17:51:07.678 -04:00 [INF] Application started. Press Ctrl+C to shut down.
+2026-05-03 17:51:07.678 -04:00 [INF] Hosting environment: Development
+2026-05-03 17:51:07.679 -04:00 [INF] Content root path: F:\Animaker\SalesAPI\SalesAPI\src\SalesAPI
+2026-05-03 17:51:07.688 -04:00 [INF] Server caio:45584:2741968c successfully announced in 10,251 ms
+2026-05-03 17:51:07.692 -04:00 [INF] Server caio:45584:2741968c is starting the registered dispatchers: ServerWatchdog, ServerJobCancellationWatcher, ExpirationManager, CountersAggregator, Worker, DelayedJobScheduler, RecurringJobScheduler...
+2026-05-03 17:51:07.757 -04:00 [INF] Server caio:45584:2741968c all the dispatchers started
+2026-05-03 17:51:08.968 -04:00 [INF] HTTP GET / responded 404 in 646.1836 ms
